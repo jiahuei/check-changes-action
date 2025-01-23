@@ -20,9 +20,9 @@ runs:
       with:
         fetch-depth: 0
 
-    - name: Run check-changes script
+    - name: Check changes
       id: check
-      shell: bash
+      shell: /usr/bin/bash --noprofile --norc -o pipefail {0}
       run: |
         WATCH_DIR="${{ inputs.watch-dir }}"
 
