@@ -1,0 +1,65 @@
+### https://git-scm.com/docs/gitattributes
+
+# When `text` is set to "auto", the path is marked for automatic end-of-line conversion.
+# If Git decides that the content is text, its line endings are converted to LF on checkin.
+# When the file has been committed with CRLF, no conversion is done.
+# https://git-scm.com/docs/gitattributes#Documentation/gitattributes.txt-Settostringvalueauto
+* text=auto eol=lf
+
+# Declare files that will always have CRLF line endings on checkout.
+*.bat text eol=crlf
+
+# Declare files that will always have LF line endings on checkout.
+*.sh text eol=lf
+
+
+# These files are text and should be normalized (Convert crlf => lf)
+# Setting the `text` attribute on a path enables end-of-line normalization and marks the path as a text file.
+# End-of-line conversion takes place without guessing the content type.
+# https://git-scm.com/docs/gitattributes#_text
+*.css text
+*.html text
+*.js* text
+*.md text
+*.py text
+*.sh text
+
+# These files are binary and should be left untouched
+# `binary` is a built-in macro for `-text` `-diff` (ie unset `text` and `diff`)
+# https://git-scm.com/docs/gitattributes#_using_macro_attributes
+*.bin binary
+*.cu.o binary
+*.jar binary
+*.pkl binary
+*.so binary
+
+# Track with Git LFS
+*.7z filter=lfs diff=lfs merge=lfs -text
+*.db filter=lfs diff=lfs merge=lfs -text
+*.doc filter=lfs diff=lfs merge=lfs -text
+*.docx filter=lfs diff=lfs merge=lfs -text
+*.gif filter=lfs diff=lfs merge=lfs -text
+*.gz filter=lfs diff=lfs merge=lfs -text
+*.heic* filter=lfs diff=lfs merge=lfs -text
+*.heif* filter=lfs diff=lfs merge=lfs -text
+*.jpeg filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.mov filter=lfs diff=lfs merge=lfs -text
+*.mp* filter=lfs diff=lfs merge=lfs -text
+*.npy filter=lfs diff=lfs merge=lfs -text
+*.npz filter=lfs diff=lfs merge=lfs -text
+*.parquet filter=lfs diff=lfs merge=lfs -text
+*.pcd filter=lfs diff=lfs merge=lfs -text
+*.pdf filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.ppt filter=lfs diff=lfs merge=lfs -text
+*.pptx filter=lfs diff=lfs merge=lfs -text
+*.pth filter=lfs diff=lfs merge=lfs -text
+*.webp filter=lfs diff=lfs merge=lfs -text
+*.xls filter=lfs diff=lfs merge=lfs -text
+*.xlsx filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text
+
+# These files should not be processed by Linguist for language detection on GitHub.com
+*.p linguist-detectable=false
+*.gz linguist-detectable=false
