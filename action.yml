@@ -1,0 +1,22 @@
+name: "Check Changes Action"
+description: "Check if changes were made in a specific directory."
+inputs:
+  watch-dir:
+    description: "The directory to watch for changes."
+    required: true
+outputs:
+  has-changes:
+    description: "Whether the directory has changes."
+    value: ${{ steps.check.outputs.has_changes }}
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Run check-changes script
+      id: check
+      shell: bash
+      run: ./check_changes.sh "${{ inputs.watch-dir }}"

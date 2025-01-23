@@ -1,2 +1,24 @@
-# check-changes-action
-GitHub Action that checks if PR changes were made in a specific directory.
+# Check Changes Action
+
+This GitHub Action checks if changes were made in a specific directory.
+
+## Inputs
+
+- `watch-dir`: The directory to watch for changes. Defaults to `src/emu/`.
+
+## Outputs
+
+- `has-changes`: `true` if changes were detected in the specified directory, otherwise `false`.
+
+## Example Usage
+
+```yaml
+jobs:
+  check-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for changes
+        uses: jiahuei/check-changes-action@v1
+        with:
+          watch-dir: "src/python/"
+```
