@@ -43,8 +43,8 @@ runs:
         changes=$(echo "$all_changes" | grep "^${WATCH_DIR}")
         if [ -n "$changes" ]; then
         echo "Changes detected in ${WATCH_DIR} directory."
-        # echo "has_changes=true" >> $GITHUB_OUTPUT
+        echo "has_changes=true" >> $GITHUB_OUTPUT
         else
         echo "No changes in ${WATCH_DIR} directory."
-        # echo "has_changes=false" >> $GITHUB_OUTPUT
+        echo "has_changes=false" >> $GITHUB_OUTPUT
         fi
