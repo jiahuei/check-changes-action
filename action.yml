@@ -1,5 +1,9 @@
 name: "Check Changes Action"
 description: "Check if changes were made in a specific directory."
+author: "Jia-Huei Tan"
+branding:
+  icon: "git-pull-request"
+  color: "green"
 inputs:
   watch-dir:
     description: "The directory to watch for changes."
