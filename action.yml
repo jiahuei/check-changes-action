@@ -1,16 +1,16 @@
 name: "Check Changes Action"
-description: "Check if changes were made in a specific directory."
+description: "Check if changes were made in a list of directories."
 author: "Jia-Huei Tan"
 branding:
   icon: "git-pull-request"
   color: "green"
 inputs:
-  watch-dir:
-    description: "The directory to watch for changes."
+  watch-dirs:
+    description: "Space-delimited list of directories to watch for changes."
     required: true
 outputs:
   has-changes:
-    description: "Whether the directory has changes."
+    description: "Whether any of the directories have changes."
     value: ${{ steps.check.outputs.has_changes }}
 runs:
   using: "composite"
@@ -24,12 +24,12 @@ runs:
       id: check
       shell: /usr/bin/bash --noprofile --norc -o pipefail {0}
       run: |
-        WATCH_DIR="${{ inputs.watch-dir }}"
+        WATCH_DIRS="${{ inputs.watch-dirs }}"
 
         # Try to get the default branch dynamically, or fall back to 'main'
         default_branch=$(git remote show origin | grep 'HEAD branch' | awk '{print $3}')
         if [ -z "$default_branch" ]; then
-        default_branch="main"  # Fallback to 'main' if the default branch cannot be determined
+          default_branch="main"  # Fallback to 'main' if the default branch cannot be determined
         fi
 
         # List changes
@@ -39,12 +39,25 @@ runs:
         printf '%s\n' $all_changes
         printf '%s\n' "-------------------------------"
 
-        # Filter changes
-        changes=$(echo "$all_changes" | grep "^${WATCH_DIR}")
-        if [ -n "$changes" ]; then
-        echo "Changes detected in ${WATCH_DIR} directory."
-        echo "has_changes=true" >> $GITHUB_OUTPUT
+        # Initialize a variable to track if any changes are detected
+        any_changes_detected=false
+
+        # Iterate over each directory in the space-delimited list
+        for WATCH_DIR in $WATCH_DIRS; do
+          # Filter changes for the current directory
+          changes=$(echo "$all_changes" | grep "^${WATCH_DIR}")
+          if [ -n "$changes" ]; then
+            echo "Changes detected in ${WATCH_DIR} directory:"
+            echo "$changes"
+            any_changes_detected=true
+          else
+            echo "No changes in ${WATCH_DIR} directory."
+          fi
+        done
+
+        # Set the output based on whether any changes were detected
+        if [ "$any_changes_detected" = true ]; then
+          echo "has_changes=1" >> $GITHUB_OUTPUT
         else
-        echo "No changes in ${WATCH_DIR} directory."
-        echo "has_changes=false" >> $GITHUB_OUTPUT
+          echo "has_changes=0" >> $GITHUB_OUTPUT
         fi
