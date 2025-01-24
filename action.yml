@@ -52,8 +52,8 @@ runs:
         # Set the output based on whether any changes were detected
         if [ "$any_changes_detected" = true ]; then
           echo "Changes detected."
-          echo "has_changes=1" >> $GITHUB_OUTPUT
+          echo "has_changes=true" >> $GITHUB_OUTPUT
         else
           echo "No change detected."
-          echo "has_changes=0" >> $GITHUB_OUTPUT
+          echo "has_changes=false" >> $GITHUB_OUTPUT
         fi

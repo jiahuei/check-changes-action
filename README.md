@@ -29,7 +29,7 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     needs: check-changes
-    if: needs.check-changes.outputs.has-changes
+    if: ${{ needs.check-changes.outputs.has-changes == 'true' }}
     steps:
       - name: Echo
         run: echo "Changes detected"
