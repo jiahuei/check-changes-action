@@ -32,32 +32,28 @@ runs:
           default_branch="main"  # Fallback to 'main' if the default branch cannot be determined
         fi
 
-        # List changes
-        all_changes=$(git diff --name-only origin/${default_branch}...HEAD)
-
-        printf '%s\n' "--------- ALL CHANGES ---------"
-        printf '%s\n' $all_changes
-        printf '%s\n' "-------------------------------"
-
         # Initialize a variable to track if any changes are detected
         any_changes_detected=false
 
         # Iterate over each directory in the space-delimited list
         for WATCH_DIR in $WATCH_DIRS; do
           # Filter changes for the current directory
-          changes=$(echo "$all_changes" | grep "^${WATCH_DIR}")
+          changes=$(git diff --name-only origin/${default_branch}...HEAD | grep "^${WATCH_DIR}")
           if [ -n "$changes" ]; then
-            echo "Changes detected in ${WATCH_DIR} directory:"
-            echo "$changes"
+            printf '%s\n' "--------- CHANGES in ${WATCH_DIR} ---------"
+            printf '%s\n' $changes
             any_changes_detected=true
           else
-            echo "No changes in ${WATCH_DIR} directory."
+            printf '%s\n' "--------- NO CHANGE in ${WATCH_DIR} ---------"
           fi
         done
+        printf '%s\n' "-------------------------------"
 
         # Set the output based on whether any changes were detected
         if [ "$any_changes_detected" = true ]; then
+          echo "Changes detected."
           echo "has_changes=1" >> $GITHUB_OUTPUT
         else
+          echo "No change detected."
           echo "has_changes=0" >> $GITHUB_OUTPUT
         fi
