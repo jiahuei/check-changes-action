@@ -4,11 +4,11 @@ This GitHub Action checks if changes were made in a list of directories.
 
 ## Inputs
 
-- `watch-dir`: Space-delimited list of directories to look for changes.
+- `watch-dirs`: Space-delimited list of directories to look for changes.
 
 ## Outputs
 
-- `has-changes`: `1` if changes were detected in any of the directories, otherwise `0`.
+- `has-changes`: `'true'` if changes were detected in any of the directories, otherwise `'false'`.
 
 ## Example Usage
 
@@ -23,13 +23,13 @@ jobs:
         uses: jiahuei/check-changes-action@v0
         id: check
         with:
-          watch-dir: "src/python/"
+          watch-dirs: "src/python/ docker/ .github/"
 
   # Only run if there are changes
   tests:
     runs-on: ubuntu-latest
     needs: check-changes
-    if: ${{ needs.check-changes.outputs.has-changes == 'true' }}
+    if: ( needs.check-changes.outputs.has-changes == 'true' || github.event_name == 'push' )
     steps:
       - name: Echo
         run: echo "Changes detected"
