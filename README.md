@@ -15,11 +15,12 @@ This GitHub Action checks if changes were made in a list of directories.
 ```yaml
 jobs:
   check-changes:
+    name: Check for changes
     runs-on: ubuntu-latest
     outputs:
       has-changes: ${{ steps.check.outputs.has-changes }}
     steps:
-      - name: Check for changes
+      - name: Check
         uses: jiahuei/check-changes-action@v0
         id: check
         with:
